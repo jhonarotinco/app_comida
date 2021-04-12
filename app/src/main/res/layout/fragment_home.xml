@@ -25,6 +25,32 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
+        android:orientation="horizontal"
+        android:background="@color/grey">
+        <TextView
+            android:layout_margin="20dp"
+            android:paddingHorizontal="10dp"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:text="Dieta de 1800 kcal"
+            android:textAlignment="center"
+            android:background="@drawable/circle"
+            android:gravity="center"/>
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="4"
+            android:text="Hola Jorge, aquí podrás visualizar tu plan alimenticio y podrás también ver las recetas y tips."
+            android:textAlignment="center"
+            android:gravity="center"
+            android:paddingLeft="30dp"
+            android:paddingRight="30dp"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:orientation="vertical">
         <LinearLayout
             android:layout_width="match_parent"
@@ -70,32 +96,7 @@
                 android:textAlignment="center"
                 android:gravity="center"/>
         </LinearLayout>
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/black"/>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="2"
-            android:orientation="horizontal">
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="2"
-                android:text="120/1500 kcal"
-                android:textAlignment="center"
-                android:gravity="center"/>
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="4"
-                android:text="Hola Jorge, aquí podrás visualizar tu plan alimenticio y podrás también ver las recetas y tips."
-                android:textAlignment="center"
-                android:gravity="center"
-                android:paddingLeft="30dp"
-                android:paddingRight="30dp"/>
-        </LinearLayout>
+
     </LinearLayout>
     <View
         android:layout_width="match_parent"
