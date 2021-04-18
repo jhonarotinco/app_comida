@@ -21,5 +21,15 @@
         android:id="@+id/nav_slideshow"
         android:name="com.upc.app_comida.ui.slideshow.SlideshowFragment"
         android:label="@string/menu_item3"
-        tools:layout="@layout/fragment_slideshow" />
+        tools:layout="@layout/fragment_slideshow" >
+        <action
+            android:id="@+id/action_nav_slideshow_to_nav_agregar_alimento"
+            app:destination="@id/nav_agregar_alimento" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_agregar_alimento"
+        android:name="com.upc.app_comida.ui.alimentos.AlimentosFragment"
+        android:label="fragment_alimentos"
+        tools:layout="@layout/fragment_alimentos" />
 </navigation>

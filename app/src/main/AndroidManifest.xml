@@ -24,7 +24,7 @@
         <activity
             android:name=".NavigationActivity"
             android:label="@string/title_activity_navigation"
-            android:theme="@style/Theme.App_comida.NoActionBar"></activity>
+            android:theme="@style/Theme.App_comida.NoActionBar" />
         <activity android:name=".Principal_Activity" />
         <activity
             android:name=".RegistrarActivity"
