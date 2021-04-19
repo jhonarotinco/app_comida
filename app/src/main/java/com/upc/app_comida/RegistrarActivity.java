@@ -18,7 +18,7 @@ public class RegistrarActivity extends AppCompatActivity {
     Button mbtn;
     Calendar cale;
     DatePickerDialog dtp;
-
+    Button btn_siguiente;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,4 +44,9 @@ public class RegistrarActivity extends AppCompatActivity {
            }
         });
     }
+
+    public void onObjectClick(View View ){
+        startActivity(new Intent(this,Object_Activity.class));
+    }
+
 }
