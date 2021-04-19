@@ -13,13 +13,20 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
+import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.HttpHeaderParser;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.UnsupportedEncodingException;
 import java.security.PublicKey;
 import java.util.HashMap;
 import java.util.Map;
@@ -38,7 +45,7 @@ public class Login_Activity extends AppCompatActivity {
             txt_usuario=findViewById(R.id.txt_usuario);
             txt_contrasena=findViewById(R.id.txt_contrasena);
             btn_ingresar=findViewById(R.id.btn_ingresar);
-            recuperarPreferencias();
+            //recuperarPreferencias();
 
             btn_ingresar.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -61,34 +68,70 @@ public class Login_Activity extends AppCompatActivity {
 
     private void validar_usuario(String URL)
     {
-        StringRequest stringRequest=new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                if (!response.isEmpty()){
-                    guardarPreferencias();
-                    Intent intent=new Intent(getApplicationContext(),NavigationActivity.class);
-                    startActivity(intent);
-                    finish();
-                }else{
-                    Toast.makeText(Login_Activity.this, "Usuario o contraseña Incorrecto", Toast.LENGTH_SHORT).show();
+
+        try {
+            JSONObject jsonBody = new JSONObject();
+            jsonBody.put("userid",usuario);
+            jsonBody.put("password",contrasena);
+            final String mRequestBody = jsonBody.toString();
+
+            StringRequest stringRequest=new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+
+                    if (!response.isEmpty()){
+                        //guardarPreferencias();
+                        Intent intent=new Intent(getApplicationContext(),NavigationActivity.class);
+                        startActivity(intent);
+                        //finish();
+                    }else{
+                        Toast.makeText(Login_Activity.this, "Usuario o contraseña Incorrecto", Toast.LENGTH_SHORT).show();
+                    }
                 }
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast.makeText(Login_Activity.this, error.toString(), Toast.LENGTH_SHORT).show();
-            }
-        }){
-            @Override
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Toast.makeText(Login_Activity.this, error.toString(), Toast.LENGTH_SHORT).show();
+                }
+            }) {
+                @Override
+                public String getBodyContentType() {
+                    return "application/json; charset=utf-8";
+                }
+
+                @Override
+                public byte[] getBody() throws AuthFailureError {
+                    try {
+                        return mRequestBody.getBytes("utf-8");
+                    } catch (UnsupportedEncodingException e) {
+                        e.printStackTrace();
+                        return null;
+                    }
+                }
+
+                @Override
+                protected Response<String> parseNetworkResponse(NetworkResponse response) {
+                    String responseString = "";
+                    if (response != null) {
+                        responseString = String.valueOf(response.statusCode);
+                    }
+                    return Response.success(responseString, HttpHeaderParser.parseCacheHeaders(response));
+                }
+
+            /*@Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String,String> parametros=new HashMap<String,String>();
-                parametros.put("usuario",usuario);
-                parametros.put("contrasena",contrasena);
+                parametros.put("userid",usuario);
+                parametros.put("password",contrasena);
                 return parametros;
-            }
-        };
-        RequestQueue requestQueue= Volley.newRequestQueue(this);
-        requestQueue.add(stringRequest);
+            }*/
+
+            };
+            RequestQueue requestQueue = Volley.newRequestQueue(this);
+            requestQueue.add(stringRequest);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     //Metodo para guardar preferencias, cuando inicia sesion la proxima vez debe de autocompletarse
