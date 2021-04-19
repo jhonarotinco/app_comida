@@ -17,6 +17,7 @@ import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
+import com.android.volley.ServerError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.HttpHeaderParser;
 import com.android.volley.toolbox.JsonObjectRequest;
@@ -91,7 +92,17 @@ public class Login_Activity extends AppCompatActivity {
             }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    Toast.makeText(Login_Activity.this, error.toString(), Toast.LENGTH_SHORT).show();
+                    NetworkResponse response = error.networkResponse;
+                    if (error instanceof ServerError && response != null){
+                        try {
+                            String res = new String(response.data,
+                                    HttpHeaderParser.parseCharset(response.headers, "utf-8"));
+                            Toast.makeText(Login_Activity.this, res, Toast.LENGTH_SHORT).show();
+                        } catch (UnsupportedEncodingException e1) {
+                            // Couldn't properly decode data to string
+                            e1.printStackTrace();
+                        }
+                    }
                 }
             }) {
                 @Override
