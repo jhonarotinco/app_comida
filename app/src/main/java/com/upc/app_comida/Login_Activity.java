@@ -128,7 +128,6 @@ public class Login_Activity extends AppCompatActivity {
                     }
                     return Response.success(responseString, HttpHeaderParser.parseCacheHeaders(response));
                 }
-
             /*@Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String,String> parametros=new HashMap<String,String>();
@@ -136,7 +135,6 @@ public class Login_Activity extends AppCompatActivity {
                 parametros.put("password",contrasena);
                 return parametros;
             }*/
-
             };
             RequestQueue requestQueue = Volley.newRequestQueue(this);
             requestQueue.add(stringRequest);
