@@ -34,26 +34,31 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:orientation="horizontal">
-            <RadioButton
-                android:id="@+id/rbtn_ganar_peso"
-                android:textColor="#24A68C"
-                android:textStyle="normal"
-                android:layout_width="wrap_content"
-                android:layout_marginStart="50dp"
-                android:textSize="18dp"
-                android:layout_height="wrap_content"
-                android:text="Ganar Peso"
-                ></RadioButton>
-            <RadioButton
-                android:id="@+id/rbt_perder_peso"
-                android:textColor="#24A68C"
-                android:textStyle="normal"
-                android:textSize="18dp"
-                android:layout_width="wrap_content"
-                android:layout_marginLeft="30dp"
-                android:layout_height="wrap_content"
-                android:text="Perder Peso"
-                ></RadioButton>
+            <RadioGroup
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+                <RadioButton
+                    android:id="@+id/rbtn_ganar_peso"
+                    android:textColor="#24A68C"
+                    android:textStyle="normal"
+                    android:layout_width="wrap_content"
+                    android:layout_marginStart="50dp"
+                    android:textSize="18dp"
+                    android:layout_height="wrap_content"
+                    android:text="Ganar Peso"
+                    ></RadioButton>
+                <RadioButton
+                    android:id="@+id/rbtn_perder_peso"
+                    android:textColor="#24A68C"
+                    android:textStyle="normal"
+                    android:textSize="18dp"
+                    android:layout_width="wrap_content"
+                    android:layout_marginLeft="30dp"
+                    android:layout_height="wrap_content"
+                    android:text="Perder Peso"
+                    ></RadioButton>
+            </RadioGroup>
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
@@ -122,7 +127,6 @@
                 android:layout_marginLeft="05dp"
                 android:layout_marginTop="25dp"
                 android:layout_marginRight="05dp"
-                android:onClick="onPlanesClick"
                 android:backgroundTint="#FF9A9A"
                 android:text="SIGUIENTE"
                 android:textColor="#ffff"
