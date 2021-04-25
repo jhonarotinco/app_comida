@@ -125,6 +125,7 @@
                 tools:layout_editor_absoluteX="1dp" />
 
             <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerListaComidas"
                 android:layout_width="match_parent"
                 android:layout_height="315dp"
                 android:layout_marginTop="32dp" />
