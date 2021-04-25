@@ -47,20 +47,15 @@ public class HomeFragment extends Fragment {
         recyclerView = view.findViewById(R.id.recyclerListaComidas);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mostrarComidas();
-
-        customAdapter = new CustomAdapter(getContext(),listaComidas);
-        recyclerView.setAdapter(customAdapter);
-
         return view;
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
         //mostrarComidas();
-
     }
+
 
     private void mostrarComidas(){
         String url = "https://upcrestapi.azurewebsites.net/Clientes";
@@ -71,11 +66,11 @@ public class HomeFragment extends Fragment {
                     JSONArray jsonArray = new JSONArray(response);
                     for (int i=0; i < jsonArray.length(); i++){
                         JSONObject objeto = jsonArray.getJSONObject(i);
-                        Comida comida = new Comida(objeto.getInt("peso"), objeto.getString("nombres"), objeto.getString("apellidos"),objeto.getInt("talla"));
+                        Comida comida = new Comida(objeto.getString("nombres"), objeto.getString("apellidos"),objeto.getInt("talla"));
                         listaComidas.add(comida);
-                        //items.add(objeto.getString("nombre") + "(S/ " + objeto.getString("precio") + ")");
                     }
-                    //ArrayAdapter<String> adaptador = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1);
+                    customAdapter = new CustomAdapter(getContext(),listaComidas);
+                    recyclerView.setAdapter(customAdapter);
                 } catch (JSONException e) {
                     Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
                 }
@@ -90,13 +85,5 @@ public class HomeFragment extends Fragment {
 
         RequestQueue cola = Volley.newRequestQueue(getContext());
         cola.add(peticion);
-
-        //customAdapter = new CustomAdapter(getContext(),listaComidas);
-        /*LinearLayoutManager llm =  new LinearLayoutManager(getContext());
-        llm.setOrientation(LinearLayoutManager.VERTICAL);
-        recyclerView.setLayoutManager(llm);*/
-        //recyclerView.setAdapter(customAdapter);
     }
-
-
 }
