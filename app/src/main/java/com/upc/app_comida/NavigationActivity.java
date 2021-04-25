@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.Menu;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
@@ -24,19 +25,20 @@ import androidx.appcompat.widget.Toolbar;
 public class NavigationActivity extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
-
+    String tipo_usuario;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_navigation);
         Toolbar toolbar = findViewById(R.id.toolbar);
+        recibir();
         setSupportActionBar(toolbar);
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_home, R.id.nav_gallery, R.id.nav_slideshow, R.id.nav_agregar_alimento)
+                R.id.nav_home, R.id.nav_gallery, R.id.nav_slideshow, R.id.nav_agregar_alimento,R.id.nav_cliente)
                 .setDrawerLayout(drawer)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
@@ -50,6 +52,7 @@ public class NavigationActivity extends AppCompatActivity {
                 return false;
             }
         });
+
     }
 
     @Override
@@ -66,4 +69,8 @@ public class NavigationActivity extends AppCompatActivity {
                 || super.onSupportNavigateUp();
     }
 
+    private  void recibir(){
+        Bundle extras=getIntent().getExtras();
+        tipo_usuario=extras.getString("tipo_usuario");
+    }
 }

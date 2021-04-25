@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioButton;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -36,7 +37,8 @@ public class Login_Activity extends AppCompatActivity {
     EditText txt_usuario,txt_contrasena;
     Button btn_ingresar;
     String usuario,contrasena;
-
+    RadioButton rbtn_cliente,rbtn_nutricionista;
+    String tipo_usuario;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,14 +47,21 @@ public class Login_Activity extends AppCompatActivity {
             getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
             txt_usuario=findViewById(R.id.txt_usuario);
             txt_contrasena=findViewById(R.id.txt_contrasena);
+            rbtn_cliente=findViewById(R.id.rbtn_cliente);
+            rbtn_nutricionista=findViewById(R.id.rbtn_nutricionista);
             btn_ingresar=findViewById(R.id.btn_ingresar);
-            //recuperarPreferencias();
+            recuperarPreferencias();
 
             btn_ingresar.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     usuario=txt_usuario.getText().toString();
                     contrasena=txt_contrasena.getText().toString();
+                    if (rbtn_cliente.isChecked()){
+                        tipo_usuario="Cliente";
+                    }else{
+                        tipo_usuario="Nutricionista";
+                    }
 
                     if (!usuario.isEmpty() && !contrasena.isEmpty())
                     {
@@ -81,10 +90,11 @@ public class Login_Activity extends AppCompatActivity {
                 public void onResponse(String response) {
 
                     if (!response.isEmpty()){
-                        //guardarPreferencias();
+                        guardarPreferencias();
                         Intent intent=new Intent(getApplicationContext(),NavigationActivity.class);
+                        //Enviamos para validar las opciones de Nutricionista y Usuario
+                        intent.putExtra("tipo_usuario",tipo_usuario);
                         startActivity(intent);
-                        //finish();
                     }else{
                         Toast.makeText(Login_Activity.this, "Usuario o contraseña Incorrecto", Toast.LENGTH_SHORT).show();
                     }

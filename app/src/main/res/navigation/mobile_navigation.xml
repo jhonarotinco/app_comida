@@ -32,4 +32,9 @@
         android:name="com.upc.app_comida.ui.alimentos.AlimentosFragment"
         android:label="fragment_alimentos"
         tools:layout="@layout/fragment_alimentos" />
+    <fragment
+        android:id="@+id/clientesFragment2"
+        android:name="com.upc.app_comida.ui.cliente.ClientesFragment"
+        android:label="fragment_clientes"
+        tools:layout="@layout/fragment_clientes" />
 </navigation>
