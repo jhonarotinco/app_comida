@@ -33,8 +33,13 @@
         android:label="fragment_alimentos"
         tools:layout="@layout/fragment_alimentos" />
     <fragment
-        android:id="@+id/clientesFragment2"
+        android:id="@+id/nav_clientes"
         android:name="com.upc.app_comida.ui.cliente.ClientesFragment"
         android:label="fragment_clientes"
         tools:layout="@layout/fragment_clientes" />
+    <fragment
+        android:id="@+id/nav_consultas"
+        android:name="com.upc.app_comida.ConsultasFragment"
+        android:label="fragment_consultas"
+        tools:layout="@layout/fragment_consultas" />
 </navigation>

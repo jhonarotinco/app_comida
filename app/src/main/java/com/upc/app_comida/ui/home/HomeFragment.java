@@ -50,7 +50,6 @@ public class HomeFragment extends Fragment {
 
         customAdapter = new CustomAdapter(getContext(),listaComidas);
         recyclerView.setAdapter(customAdapter);
-
         return view;
     }
 

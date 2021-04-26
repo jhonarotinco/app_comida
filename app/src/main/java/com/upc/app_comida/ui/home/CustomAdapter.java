@@ -43,25 +43,6 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.miVista> {
         holder.nombre_comida.setText(String.valueOf(listaComida.get(position).getNombre()));
         holder.categoria_comida.setText(String.valueOf(listaComida.get(position).getCategoria()));
         holder.calorias_comida.setText(String.valueOf(listaComida.get(position).getCalorias()));
-        /*holder.filaLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(context, )
-            }
-        });*/
-
-        /*holder.itemView.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View view) {
-                Bundle bundle = new Bundle();
-                bundle.putString("idComida", );
-                bundle.putString("nombreComida", );
-                bundle.putString("nombreCategoria" );
-                bundle.putInt("calorias", );
-                holder.itemView.findNavController()
-            }
-        });*/
     }
 
     @Override

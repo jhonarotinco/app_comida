@@ -6,7 +6,14 @@ public class Cliente {
     private String nombre;
     private String objetivo;
 
-    public Cliente(String objetoString, String string, String df, String correo) {
+    public Cliente(String correo, String nombre, String objetivo) {
+        this.correo = correo;
+        this.nombre = nombre;
+        this.objetivo = objetivo;
+    }
+
+    public Cliente(String id, String correo, String nombre, String objetivo) {
+        this.id = id;
         this.correo = correo;
         this.nombre = nombre;
         this.objetivo = objetivo;
@@ -44,3 +51,4 @@ public class Cliente {
         this.objetivo = objetivo;
     }
 }
+
