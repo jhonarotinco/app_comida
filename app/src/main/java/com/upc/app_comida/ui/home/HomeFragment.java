@@ -67,12 +67,21 @@ public class HomeFragment extends Fragment {
                     for (int i=0; i < jsonArray.length(); i++){
                         JSONObject objeto = jsonArray.getJSONObject(i);
                         Comida comida = new Comida(objeto.getString("nombres"), objeto.getString("apellidos"),objeto.getInt("talla"));
+                        JSONObject miplan = objeto.getJSONObject("miPlan");
+                        if (!miplan.isNull("alimentos")) {
+                            JSONArray alimentos = miplan.getJSONArray("alimentos");
+                            for (int j = 0; j < alimentos.length(); j++) {
+                                JSONObject alimento = alimentos.getJSONObject(j);
+                                System.out.println(alimento.getString("titulo"));
+                            }
+                        }
                         listaComidas.add(comida);
                     }
                     customAdapter = new CustomAdapter(getContext(),listaComidas);
                     recyclerView.setAdapter(customAdapter);
                 } catch (JSONException e) {
                     Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                    System.out.println(e);
                 }
 
             }
@@ -82,6 +91,40 @@ public class HomeFragment extends Fragment {
                 Toast.makeText(getContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
+
+        /*String url = "https://upcrestapi.azurewebsites.net/api/Karmu/Usuarios/"+idUsuario;
+        StringRequest peticion = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONArray jsonArray = new JSONArray(response);
+                    for (int i=0; i < jsonArray.length(); i++){
+                        JSONObject objeto = jsonArray.getJSONObject(i);
+                        Comida comida = new Comida(objeto.getString("nombres"), objeto.getString("apellidos"),objeto.getInt("talla"));
+                        JSONObject miplan = objeto.getJSONObject("miPlan");
+                        if (!miplan.isNull("alimentos")) {
+                            JSONArray alimentos = miplan.getJSONArray("alimentos");
+                            for (int j = 0; j < alimentos.length(); j++) {
+                                JSONObject alimento = alimentos.getJSONObject(j);
+                                System.out.println(alimento.getString("titulo"));
+                            }
+                        }
+                        listaComidas.add(comida);
+                    }
+                    customAdapter = new CustomAdapter(getContext(),listaComidas);
+                    recyclerView.setAdapter(customAdapter);
+                } catch (JSONException e) {
+                    Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                    System.out.println(e);
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });*/
 
         RequestQueue cola = Volley.newRequestQueue(getContext());
         cola.add(peticion);
