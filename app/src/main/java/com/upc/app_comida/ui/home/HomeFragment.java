@@ -37,6 +37,7 @@ public class HomeFragment extends Fragment {
 
 
     RecyclerView recyclerView;
+    String idUsuario;
 
     ArrayList<Comida> listaComidas = new ArrayList<>();
     CustomAdapter customAdapter;
@@ -44,6 +45,9 @@ public class HomeFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
+        //Intentando recibir variable idUsuario desde NavigationActivity
+        /*idUsuario = getArguments().getString("idUsuario");
+        Toast.makeText(getContext(), idUsuario, Toast.LENGTH_SHORT).show();*/
         recyclerView = view.findViewById(R.id.recyclerListaComidas);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mostrarComidas();
@@ -57,42 +61,9 @@ public class HomeFragment extends Fragment {
     }
 
 
+
     private void mostrarComidas(){
-        String url = "https://upcrestapi.azurewebsites.net/Clientes";
-        StringRequest peticion = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                try {
-                    JSONArray jsonArray = new JSONArray(response);
-                    for (int i=0; i < jsonArray.length(); i++){
-                        JSONObject objeto = jsonArray.getJSONObject(i);
-                        Comida comida = new Comida(objeto.getString("nombres"), objeto.getString("apellidos"),objeto.getInt("talla"));
-                        JSONObject miplan = objeto.getJSONObject("miPlan");
-                        if (!miplan.isNull("alimentos")) {
-                            JSONArray alimentos = miplan.getJSONArray("alimentos");
-                            for (int j = 0; j < alimentos.length(); j++) {
-                                JSONObject alimento = alimentos.getJSONObject(j);
-                                System.out.println(alimento.getString("titulo"));
-                            }
-                        }
-                        listaComidas.add(comida);
-                    }
-                    customAdapter = new CustomAdapter(getContext(),listaComidas);
-                    recyclerView.setAdapter(customAdapter);
-                } catch (JSONException e) {
-                    Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
-                    System.out.println(e);
-                }
-
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        /*String url = "https://upcrestapi.azurewebsites.net/api/Karmu/Usuarios/"+idUsuario;
+        /*String url = "https://upcrestapi.azurewebsites.net/Clientes";
         StringRequest peticion = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -125,6 +96,34 @@ public class HomeFragment extends Fragment {
                 Toast.makeText(getContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });*/
+
+        String idUsuario_request = "jordi%40visionit.pe";
+        String url = "https://upcrestapi.azurewebsites.net/api/Karmu/Usuarios/" + idUsuario_request + "/plan";
+        StringRequest peticion = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONObject jsonArray = new JSONObject(response);
+                    JSONArray alimentos = jsonArray.getJSONArray("alimentos");
+                    for (int i=0; i < alimentos.length(); i++){
+                        JSONObject objeto = alimentos.getJSONObject(i);
+                        Comida comida = new Comida(objeto.getString("titulo"), objeto.getString("tipo"), objeto.getInt("calorias"));
+                        listaComidas.add(comida);
+                    }
+                    customAdapter = new CustomAdapter(getContext(),listaComidas);
+                    recyclerView.setAdapter(customAdapter);
+                } catch (JSONException e) {
+                    Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                    System.out.println(e);
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
 
         RequestQueue cola = Volley.newRequestQueue(getContext());
         cola.add(peticion);

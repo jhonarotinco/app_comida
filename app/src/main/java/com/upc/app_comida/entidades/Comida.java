@@ -6,16 +6,16 @@ public class Comida {
     private String categoria;
     private int calorias;
 
-    public Comida(String nombre, String cantidad, int calorias) {
+    public Comida(String nombre, String categoria, int calorias) {
         this.nombre = nombre;
-        this.categoria = cantidad;
+        this.categoria = categoria;
         this.calorias = calorias;
     }
 
-    public Comida(int id, String nombre, String cantidad, int calorias) {
+    public Comida(int id, String nombre, String categoria, int calorias) {
         this.id = id;
         this.nombre = nombre;
-        this.categoria = cantidad;
+        this.categoria = categoria;
         this.calorias = calorias;
     }
 
@@ -39,7 +39,7 @@ public class Comida {
         return categoria;
     }
 
-    public void setCategoria(String cantidad) {
+    public void setCategoria(String categoria) {
         this.categoria = categoria;
     }
 

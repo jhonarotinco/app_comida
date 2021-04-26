@@ -26,6 +26,7 @@ public class NavigationActivity extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
     String tipo_usuario;
+    String idUsuario;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,7 +53,6 @@ public class NavigationActivity extends AppCompatActivity {
                 return false;
             }
         });
-
     }
 
     @Override
@@ -72,5 +72,12 @@ public class NavigationActivity extends AppCompatActivity {
     private  void recibir(){
         Bundle extras=getIntent().getExtras();
         tipo_usuario=extras.getString("tipo_usuario");
+
+        //Intentando pasar variable idUsuario al fragmento Home
+        /*idUsuario = extras.getString("idUsuario");
+        //Toast.makeText(this, idUsuario, Toast.LENGTH_SHORT).show();
+
+        Bundle bundle = new Bundle();
+        bundle.putString("idUsuario", idUsuario);*/
     }
 }
