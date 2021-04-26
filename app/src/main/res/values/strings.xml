@@ -16,6 +16,7 @@
     <string name="menu_home">Mi Plan</string>
     <string name="menu_progress">Mi Progreso</string>
     <string name="menu_item3">Alimentos</string>
+    <string name="Clientes">Alimentos</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="fragment_agregar_alimento">Agregar Alimento</string>
     <!-- TODO: Remove or change this placeholder text -->
