@@ -9,8 +9,8 @@ public class GalleryViewModel extends ViewModel {
     private MutableLiveData<String> mText;
 
     public GalleryViewModel() {
-        mText = new MutableLiveData<>();
-        mText.setValue("esto es una prueba");
+
+
     }
 
     public LiveData<String> getText() {

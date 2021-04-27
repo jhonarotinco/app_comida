@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -41,11 +42,12 @@ public class ClienteAdapter extends RecyclerView.Adapter<ClienteAdapter.mivista>
         holder.correo.setText(String.valueOf(listacliente.get(position).getCorreo()));
         holder.nombre.setText(String.valueOf(listacliente.get(position).getNombre()));
         holder.objetivo.setText(String.valueOf(listacliente.get(position).getObjetivo()));
-        holder.imgReceta.setOnClickListener(new View.OnClickListener() {
+        holder.imgGrafico.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent=new Intent(context, RegistrarActivity.class);
-                context.startActivity(intent);
+                //Intent intent=new Intent(context,nav_fr);
+                //context.startActivity(intent);
+                Toast.makeText(context, "Prueba", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -65,8 +67,8 @@ public class ClienteAdapter extends RecyclerView.Adapter<ClienteAdapter.mivista>
             correo=itemView.findViewById(R.id.txt_correo_v);
             nombre=itemView.findViewById(R.id.txt_nombre_v);
             objetivo=itemView.findViewById(R.id.txt_objetivo_v);
-            imgReceta=itemView.findViewById(R.id.imgReceta);
-            imgReceta=itemView.findViewById(R.id.imgGrafico);
+            //imgReceta=itemView.findViewById(R.id.imgReceta);
+            imgGrafico=itemView.findViewById(R.id.imgGrafico);
         }
     }
 }

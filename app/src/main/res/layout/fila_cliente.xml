@@ -65,7 +65,7 @@
         android:layout_toEndOf="@+id/imagen"
         android:layout_below="@+id/nombre_clie"
         android:layout_marginStart="10dp"
-        android:text="Apellidos:"
+        android:text="Objetivo:"
         android:textColor="@color/black"
         android:textStyle="bold"
         android:textSize="16sp"/>
@@ -77,18 +77,10 @@
         android:layout_toEndOf="@+id/objetivo"
         android:layout_below="@+id/txt_nombre_v"
         android:layout_marginStart="10dp"
-        android:text="Lopez"
+        android:text="ninguno"
         android:textColor="@color/black"
         android:textStyle="bold"
         android:textSize="16sp"/>
-    <ImageView
-        android:id="@+id/imgReceta"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:layout_toStartOf="@+id/imgGrafico"
-        android:layout_marginEnd="10dp"
-        android:src="@drawable/ic_baseline_insert_drive_file_24"/>
 
     <ImageView
         android:id="@+id/imgGrafico"
