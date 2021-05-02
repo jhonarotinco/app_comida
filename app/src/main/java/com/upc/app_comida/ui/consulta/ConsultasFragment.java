@@ -1,6 +1,8 @@
 package com.upc.app_comida.ui.consulta;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -38,7 +40,8 @@ public class ConsultasFragment extends Fragment {
     RecyclerView recyclerView;
     ConsultaAdapter consultaAdapter;
     Button btn_nueva_consulta;
-    Bundle datosEnviar=new Bundle();
+    String Usuario,tipo_usuario;
+
     public ConsultasFragment() {
         // Required empty public constructor
     }
@@ -57,11 +60,14 @@ public class ConsultasFragment extends Fragment {
         recyclerView=view.findViewById(R.id.recyclerListaconsulta);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         btn_nueva_consulta=view.findViewById(R.id.btn_nueva_consulta);
+        recuperarPreferencias();
+        if (tipo_usuario=="Nutricionista"){
+            btn_nueva_consulta.setVisibility(view.GONE);
+        }
         listar_consultas();
         btn_nueva_consulta.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //datosEnviar.putInt("condi",1);
                 Navigation.findNavController(view).navigate(R.id.nav_consul_respon_frag);
             }
         });
@@ -70,7 +76,7 @@ public class ConsultasFragment extends Fragment {
 
     private  void listar_consultas(){
         String url="";
-        String usu="jordi%40visionit.pe";
+        String usu=Usuario;
         url="https://upcrestapi.azurewebsites.net/api/Karmu/Usuarios/"+usu;
         StringRequest peticion=new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
@@ -101,7 +107,11 @@ public class ConsultasFragment extends Fragment {
         cola.add(peticion);
     }
 
-    private void _grabar_consulta(){
-
+    //Meotod para recuperar dichas preferencias
+    private void  recuperarPreferencias()
+    {
+        SharedPreferences preferences=this.getActivity().getSharedPreferences("preferencias",Context.MODE_PRIVATE);
+        Usuario=preferences.getString("usuario","ejemplo@dominio.com");
+        tipo_usuario=preferences.getString("tipo_usuario","ejemplo@dominio.com");
     }
 }

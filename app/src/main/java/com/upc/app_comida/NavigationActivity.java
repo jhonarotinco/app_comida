@@ -32,7 +32,6 @@ public class NavigationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_navigation);
         Toolbar toolbar = findViewById(R.id.toolbar);
-        recibir();
         setSupportActionBar(toolbar);
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
@@ -69,15 +68,4 @@ public class NavigationActivity extends AppCompatActivity {
                 || super.onSupportNavigateUp();
     }
 
-    private  void recibir(){
-        Bundle extras=getIntent().getExtras();
-        tipo_usuario=extras.getString("tipo_usuario");
-
-        //Intentando pasar variable idUsuario al fragmento Home
-        /*idUsuario = extras.getString("idUsuario");
-        //Toast.makeText(this, idUsuario, Toast.LENGTH_SHORT).show();
-
-        Bundle bundle = new Bundle();
-        bundle.putString("idUsuario", idUsuario);*/
-    }
 }

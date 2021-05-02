@@ -59,7 +59,7 @@ public class Login_Activity extends AppCompatActivity {
                     contrasena=txt_contrasena.getText().toString();
                     if (rbtn_cliente.isChecked()){
                         tipo_usuario="Cliente";
-                    }else{
+                    }else if (rbtn_nutricionista.isChecked()){
                         tipo_usuario="Nutricionista";
                     }
 
@@ -93,8 +93,8 @@ public class Login_Activity extends AppCompatActivity {
                         guardarPreferencias();
                         Intent intent=new Intent(getApplicationContext(),NavigationActivity.class);
                         //Enviamos para validar las opciones de Nutricionista y Usuario
-                        intent.putExtra("tipo_usuario",tipo_usuario);
-                        intent.putExtra("idUsuario", usuario);
+                        //intent.putExtra("tipo_usuario",tipo_usuario);
+                        //intent.putExtra("idUsuario", usuario);
                         startActivity(intent);
                     }else{
                         Toast.makeText(Login_Activity.this, "Usuario o contraseña Incorrecto", Toast.LENGTH_SHORT).show();
@@ -161,8 +161,9 @@ public class Login_Activity extends AppCompatActivity {
         SharedPreferences.Editor editor=preferences.edit();
         editor.putString("usuario",usuario);
         editor.putString("contrasena",contrasena);
+        editor.putString("tipo_usuario",tipo_usuario);
         editor.putBoolean("Sesion",true);
-        editor.commit();
+        editor.apply();
     }
 
     //Meotod para recuperar dichas preferencias
@@ -172,6 +173,7 @@ public class Login_Activity extends AppCompatActivity {
         txt_usuario.setText(preferences.getString("usuario","ejemplo@dominio.com"));
         txt_contrasena.setText(preferences.getString("contrasena","123456"));
     }
+
     public void onLoginClick(View View ){
         startActivity(new Intent(this,NavigationActivity.class));
     }

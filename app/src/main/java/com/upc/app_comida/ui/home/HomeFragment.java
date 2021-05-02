@@ -1,5 +1,7 @@
 package com.upc.app_comida.ui.home;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -39,6 +41,7 @@ public class HomeFragment extends Fragment {
 
     RecyclerView recyclerView;
     String idUsuario;
+    String tipo_usuario,Usuario;
 
     ArrayList<Comida> listaComidas = new ArrayList<>();
     CustomAdapter customAdapter;
@@ -51,6 +54,7 @@ public class HomeFragment extends Fragment {
         Toast.makeText(getContext(), idUsuario, Toast.LENGTH_SHORT).show();*/
         recyclerView = view.findViewById(R.id.recyclerListaComidas);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        recuperarPreferencias();
         mostrarComidas();
         return view;
     }
@@ -61,7 +65,12 @@ public class HomeFragment extends Fragment {
         //mostrarComidas();
     }
 
-
+    private void  recuperarPreferencias()
+    {
+        SharedPreferences preferences=this.getActivity().getSharedPreferences("preferencias", Context.MODE_PRIVATE);
+        Usuario=preferences.getString("usuario","ejemplo@dominio.com");
+        tipo_usuario=preferences.getString("tipo_usuario","ejemplo@dominio.com");
+    }
 
     private void mostrarComidas(){
         /*String url = "https://upcrestapi.azurewebsites.net/Clientes";
@@ -98,7 +107,7 @@ public class HomeFragment extends Fragment {
             }
         });*/
 
-        String idUsuario_request = "jordi%40visionit.pe";
+        String idUsuario_request = Usuario;
         String url = "https://upcrestapi.azurewebsites.net/api/Karmu/Usuarios/" + idUsuario_request + "/plan";
         StringRequest peticion = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override

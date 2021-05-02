@@ -1,6 +1,8 @@
 package com.upc.app_comida.ui.consulta;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -12,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -37,9 +40,11 @@ import java.io.UnsupportedEncodingException;
 public class Consul_Respo_Fragment extends Fragment {
 
     EditText txt_pregunta_c,txt_respuesta_n;
-    TextView txv_nutricionista;
+    TextView txv_nutricionista,txv_consulta_c;
     String pregunta;
-    Button btn_grabar_consulta,btn_grabar_respuesta;
+    String Usuario,tipo_usuario;
+    ImageView imgresponder;
+    Button btn_grabar_consulta,btn_grabar_respuesta,btn_nuevo_consulta;
 
     int condi;
     public Consul_Respo_Fragment() {
@@ -62,17 +67,28 @@ public class Consul_Respo_Fragment extends Fragment {
         btn_grabar_consulta=view.findViewById(R.id.btn_grabar_consulta);
         btn_grabar_respuesta=view.findViewById(R.id.btn_responder_consula);
         txv_nutricionista=view.findViewById(R.id.txv_nutricionista);
+        txv_consulta_c=view.findViewById(R.id.txv_consulta_c);
+        imgresponder=view.findViewById(R.id.imgresponder);
         //Configuramos para que no sea visible eel boton
         //txt_pregunta_c.setText(Consulta.);
-        btn_grabar_respuesta.setVisibility(View.GONE);
-        txt_respuesta_n.setVisibility(View.GONE);
-        txv_nutricionista.setVisibility(View.GONE);
+        recuperarPreferencias();
+        if (tipo_usuario=="Cliente"){
+            btn_grabar_respuesta.setVisibility(View.GONE);
+            txt_respuesta_n.setVisibility(View.GONE);
+            txv_nutricionista.setVisibility(View.GONE);
+            imgresponder.setVisibility(View.GONE);
+        }else{
+            btn_grabar_consulta.setVisibility(View.GONE);
+            txt_pregunta_c.setVisibility(View.GONE);
+            txv_consulta_c.setVisibility(View.GONE);
+        }
         //btn_grabar_consulta.setVisibility(View.GONE);
         btn_grabar_consulta.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 pregunta=txt_pregunta_c.getText().toString();
-                String id_usuario="jordi%40visionit.pe";//Por el momento
+
+                String id_usuario=Usuario;
                 if (!pregunta.isEmpty()){
                     pv_grabar_respuesta("https://upcrestapi.azurewebsites.net/Usuarios/"+id_usuario+"/Consultas");
                     Navigation.findNavController(view).navigate(R.id.nav_consultas);
@@ -82,6 +98,15 @@ public class Consul_Respo_Fragment extends Fragment {
             }
         });
         return view;
+    }
+
+
+    //Meotod para recuperar dichas preferencias
+    private void  recuperarPreferencias()
+    {
+        SharedPreferences preferences=this.getActivity().getSharedPreferences("preferencias", Context.MODE_PRIVATE);
+        Usuario=preferences.getString("usuario","ejemplo@dominio.com");
+        tipo_usuario=preferences.getString("tipo_usuario","ejemplo@dominio.com");
     }
 
     private void pv_grabar_respuesta(String url){

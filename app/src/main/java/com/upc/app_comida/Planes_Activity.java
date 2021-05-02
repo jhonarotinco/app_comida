@@ -93,8 +93,8 @@ public class Planes_Activity extends AppCompatActivity {
                 @Override
                 public void onResponse(String response) {
                     Toast.makeText(Planes_Activity.this, "Registrado Correctamente", Toast.LENGTH_SHORT).show();
-                    //Intent intent=new Intent(Planes_Activity.this,NavigationActivity.class);
-                    //startActivity(intent);
+                    Intent intent=new Intent(Planes_Activity.this,NavigationActivity.class);
+                    startActivity(intent);
                     //Log.d("test","satisfactorio:"+response);
                     Log.d("test2","satisfactorio:"+jsonBody.toString());
                 }
