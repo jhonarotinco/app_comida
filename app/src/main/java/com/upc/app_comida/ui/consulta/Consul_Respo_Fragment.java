@@ -101,7 +101,7 @@ public class Consul_Respo_Fragment extends Fragment {
             public void onClick(View view) {
                 respuesta=txt_respuesta_n.getText().toString();
                 int id_consulta=3;
-                String id_usuario="sara%40visionit.pe";
+                String id_usuario=Usuario;
                 if (!respuesta.isEmpty()){
                     pv_responder("https://upcrestapi.azurewebsites.net/Usuarios/"+id_usuario+"/Consultas");
                     Navigation.findNavController(view).navigate(R.id.nav_consultas);
@@ -118,12 +118,12 @@ public class Consul_Respo_Fragment extends Fragment {
         try {
             RequestQueue requestQueue=Volley.newRequestQueue(getContext());
             JSONObject jsonBody=new JSONObject();
-            jsonBody.put("id",3);
+            jsonBody.put("id",2);
             jsonBody.put("pregunta","");
             jsonBody.put("respuesta",respuesta);
             jsonBody.put("estado","Respondido");
             final  String mRequestBody=jsonBody.toString();
-            StringRequest stringRequest=new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+            StringRequest stringRequest=new StringRequest(Request.Method.PUT, url, new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
                     Toast.makeText(getContext(), "Respuesta Registrado Correctamente", Toast.LENGTH_SHORT).show();
