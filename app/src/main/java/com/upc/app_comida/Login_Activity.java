@@ -91,11 +91,14 @@ public class Login_Activity extends AppCompatActivity {
 
                     if (!response.isEmpty()){
                         guardarPreferencias();
-                        Intent intent=new Intent(getApplicationContext(),NavigationActivity.class);
-                        //Enviamos para validar las opciones de Nutricionista y Usuario
-                        //intent.putExtra("tipo_usuario",tipo_usuario);
-                        //intent.putExtra("idUsuario", usuario);
-                        startActivity(intent);
+                        if (tipo_usuario=="Cliente"){
+                            Intent intent=new Intent(getApplicationContext(),NavigationActivity.class);
+                            startActivity(intent);
+                        }else{
+                            Intent intent=new Intent(getApplicationContext(),NavigationActivity.class);
+                            startActivity(intent);
+                        }
+
                     }else{
                         Toast.makeText(Login_Activity.this, "Usuario o contraseña Incorrecto", Toast.LENGTH_SHORT).show();
                     }

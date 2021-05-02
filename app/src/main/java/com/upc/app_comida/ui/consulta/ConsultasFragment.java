@@ -18,6 +18,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -41,7 +42,7 @@ public class ConsultasFragment extends Fragment {
     ConsultaAdapter consultaAdapter;
     Button btn_nueva_consulta;
     String Usuario,tipo_usuario;
-
+    ImageView imgresponder;
     public ConsultasFragment() {
         // Required empty public constructor
     }

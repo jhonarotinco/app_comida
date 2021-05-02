@@ -41,7 +41,7 @@ public class Consul_Respo_Fragment extends Fragment {
 
     EditText txt_pregunta_c,txt_respuesta_n;
     TextView txv_nutricionista,txv_consulta_c;
-    String pregunta;
+    String pregunta,respuesta;
     String Usuario,tipo_usuario;
     ImageView imgresponder;
     Button btn_grabar_consulta,btn_grabar_respuesta,btn_nuevo_consulta;
@@ -68,7 +68,6 @@ public class Consul_Respo_Fragment extends Fragment {
         btn_grabar_respuesta=view.findViewById(R.id.btn_responder_consula);
         txv_nutricionista=view.findViewById(R.id.txv_nutricionista);
         txv_consulta_c=view.findViewById(R.id.txv_consulta_c);
-        imgresponder=view.findViewById(R.id.imgresponder);
         //Configuramos para que no sea visible eel boton
         //txt_pregunta_c.setText(Consulta.);
         recuperarPreferencias();
@@ -76,7 +75,6 @@ public class Consul_Respo_Fragment extends Fragment {
             btn_grabar_respuesta.setVisibility(View.GONE);
             txt_respuesta_n.setVisibility(View.GONE);
             txv_nutricionista.setVisibility(View.GONE);
-            imgresponder.setVisibility(View.GONE);
         }else{
             btn_grabar_consulta.setVisibility(View.GONE);
             txt_pregunta_c.setVisibility(View.GONE);
@@ -90,30 +88,97 @@ public class Consul_Respo_Fragment extends Fragment {
 
                 String id_usuario=Usuario;
                 if (!pregunta.isEmpty()){
-                    pv_grabar_respuesta("https://upcrestapi.azurewebsites.net/Usuarios/"+id_usuario+"/Consultas");
+                    pv_grabar_consulta("https://upcrestapi.azurewebsites.net/Usuarios/"+id_usuario+"/Consultas");
                     Navigation.findNavController(view).navigate(R.id.nav_consultas);
                 }else   {
                     Toast.makeText(getContext(), "Debe de ingresar su consulta", Toast.LENGTH_SHORT).show();
                 }
             }
         });
+
+        btn_grabar_respuesta.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                respuesta=txt_respuesta_n.getText().toString();
+                int id_consulta=3;
+                String id_usuario="sara%40visionit.pe";
+                if (!respuesta.isEmpty()){
+                    pv_responder("https://upcrestapi.azurewebsites.net/Usuarios/"+id_usuario+"/Consultas");
+                    Navigation.findNavController(view).navigate(R.id.nav_consultas);
+                }else
+                {
+                    Toast.makeText(getContext(), "Debe de ingresar su respuesta", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
         return view;
     }
+    //Metodo para responder una consulta
+    private void pv_responder(String url){
+        try {
+            RequestQueue requestQueue=Volley.newRequestQueue(getContext());
+            JSONObject jsonBody=new JSONObject();
+            jsonBody.put("id",3);
+            jsonBody.put("pregunta","");
+            jsonBody.put("respuesta",respuesta);
+            jsonBody.put("estado","Respondido");
+            final  String mRequestBody=jsonBody.toString();
+            StringRequest stringRequest=new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+                    Toast.makeText(getContext(), "Respuesta Registrado Correctamente", Toast.LENGTH_SHORT).show();
+                    //Log.d("prueba","correcto" +jsonBody.toString());
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    NetworkResponse response = error.networkResponse;
+                    if (error instanceof ServerError && response != null){
+                        try {
+                            String res = new String(response.data,
+                                    HttpHeaderParser.parseCharset(response.headers, "utf-8"));
+                            Toast.makeText(getContext(), res, Toast.LENGTH_SHORT).show();
+                        } catch (UnsupportedEncodingException e1) {
+                            // Couldn't properly decode data to string
+                            e1.printStackTrace();
+                        }
+                    }
+                }
+            }){
+                @Override
+                public String getBodyContentType() {return "application/json; charset=utf-8";}
 
+                @Override
+                public byte[] getBody() throws AuthFailureError {
+                    try {
+                        return mRequestBody.getBytes("utf-8");
+                    } catch (UnsupportedEncodingException e) {
+                        e.printStackTrace();
+                        return null;
+                    }
+                }
+                @Override
+                protected Response<String> parseNetworkResponse(NetworkResponse response) {
+                    String responseString = "";
+                    if (response != null) {
+                        responseString = String.valueOf(response.statusCode);
+                    }
+                    return Response.success(responseString, HttpHeaderParser.parseCacheHeaders(response));
+                }
+            };
+            requestQueue.add(stringRequest);
 
-    //Meotod para recuperar dichas preferencias
-    private void  recuperarPreferencias()
-    {
-        SharedPreferences preferences=this.getActivity().getSharedPreferences("preferencias", Context.MODE_PRIVATE);
-        Usuario=preferences.getString("usuario","ejemplo@dominio.com");
-        tipo_usuario=preferences.getString("tipo_usuario","ejemplo@dominio.com");
+        }catch (JSONException e){
+            e.printStackTrace();
+        }
     }
 
-    private void pv_grabar_respuesta(String url){
+
+    private void pv_grabar_consulta(String url){
             try {
                 RequestQueue requestQueue=Volley.newRequestQueue(getContext());
                 JSONObject jsonBody=new JSONObject();
-                jsonBody.put("id",3);
+                jsonBody.put("id",4);
                 jsonBody.put("pregunta",pregunta);
                 jsonBody.put("respuesta","");
                 jsonBody.put("estado","Pendiente");
@@ -166,5 +231,13 @@ public class Consul_Respo_Fragment extends Fragment {
             }catch (JSONException e){
                 e.printStackTrace();
             }
+    }
+
+    //Meotod para recuperar dichas preferencias
+    private void  recuperarPreferencias()
+    {
+        SharedPreferences preferences=this.getActivity().getSharedPreferences("preferencias", Context.MODE_PRIVATE);
+        Usuario=preferences.getString("usuario","ejemplo@dominio.com");
+        tipo_usuario=preferences.getString("tipo_usuario","ejemplo@dominio.com");
     }
 }
