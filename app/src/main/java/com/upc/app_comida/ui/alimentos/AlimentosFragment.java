@@ -58,7 +58,8 @@ public class AlimentosFragment extends Fragment {
             String url = "https://upcrestapi.azurewebsites.net/api/Karmu/Alimentos";
             RequestQueue requestQueue= Volley.newRequestQueue(getContext());
             JSONObject jsonBody=new JSONObject();
-            jsonBody.put("id",6);
+            jsonBody.put("id","7");
+            jsonBody.put("alimentoid", "7");
             jsonBody.put("titulo", txtNombreComida.getText().toString());
             jsonBody.put("distribucionEnergetica","");
             jsonBody.put("tipo", txtCategoria.getText().toString());
@@ -78,9 +79,11 @@ public class AlimentosFragment extends Fragment {
                             String res = new String(response.data,
                                     HttpHeaderParser.parseCharset(response.headers, "utf-8"));
                             Toast.makeText(getContext(), res, Toast.LENGTH_SHORT).show();
+                            System.out.println(res);
                         } catch (UnsupportedEncodingException e1) {
                             // Couldn't properly decode data to string
                             e1.printStackTrace();
+                            System.out.println(e1);
                         }
                     }
                 }

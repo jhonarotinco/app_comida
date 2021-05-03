@@ -88,7 +88,6 @@ public class Login_Activity extends AppCompatActivity {
             StringRequest stringRequest=new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
-
                     if (!response.isEmpty()){
                         guardarPreferencias();
                         if (tipo_usuario=="Cliente"){
