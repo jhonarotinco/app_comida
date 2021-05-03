@@ -15,7 +15,11 @@
         android:id="@+id/nav_gallery"
         android:name="com.upc.app_comida.ui.gallery.GalleryFragment"
         android:label="@string/menu_progress"
-        tools:layout="@layout/fragment_gallery" />
+        tools:layout="@layout/fragment_gallery" >
+        <action
+            android:id="@+id/action_nav_gallery_to_nav_registrar_peso"
+            app:destination="@id/nav_registrar_peso" />
+    </fragment>
 
     <fragment
         android:id="@+id/nav_slideshow"
@@ -32,4 +36,29 @@
         android:name="com.upc.app_comida.ui.alimentos.AlimentosFragment"
         android:label="fragment_alimentos"
         tools:layout="@layout/fragment_alimentos" />
+    <fragment
+        android:id="@+id/nav_clientes"
+        android:name="com.upc.app_comida.ui.cliente.ClientesFragment"
+        android:label="fragment_clientes"
+        tools:layout="@layout/fragment_clientes" />
+    <fragment
+        android:id="@+id/nav_consultas"
+        android:name="com.upc.app_comida.ui.consulta.ConsultasFragment"
+        android:label="fragment_consultas"
+        tools:layout="@layout/fragment_consultas" />
+    <fragment
+        android:id="@+id/nav_consul_respon_frag"
+        android:name="com.upc.app_comida.ui.consulta.Consul_Respo_Fragment"
+        android:label="fragment_consul__respo_"
+        tools:layout="@layout/fragment_consul__respo_" />
+    <fragment
+        android:id="@+id/nav_contacto"
+        android:name="com.upc.app_comida.ui.contacto.ContactoFragment"
+        android:label="fragment_contacto"
+        tools:layout="@layout/fragment_contacto" />
+    <fragment
+        android:id="@+id/nav_registrar_peso"
+        android:name="com.upc.app_comida.ui.gallery.RegistrarPesoFragment"
+        android:label="fragment_registrar_peso"
+        tools:layout="@layout/fragment_registrar_peso" />
 </navigation>

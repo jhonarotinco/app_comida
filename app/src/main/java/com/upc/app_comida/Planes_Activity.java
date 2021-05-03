@@ -2,7 +2,10 @@ package com.upc.app_comida;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
+import android.nfc.Tag;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -12,138 +15,150 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
+import com.android.volley.NetworkResponse;
 import com.android.volley.ParseError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
+import com.android.volley.ServerError;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.HttpHeaderParser;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
 
 public class Planes_Activity extends AppCompatActivity {
-    //Datos del usuario
-    EditText txt_correo,txt_contrasena,txt_nombre,txt_apellido,txt_fecha,txt_talla,txt_peso;
-    String correo,contrasena,nombre,apellido,fecha,talla,peso;
-    Spinner cbo_genero;
-    String genero;
-    //Datos del Objetivo
-    RadioButton rbtn_ganar_peso,rbtn_perder_peso;
-    String qstr_ganar_o_perder_peso;
-    EditText txt_alergia;
-    String alergia;
-    NumberPicker txt_cant_kilo;
-    Double cant_kilo;
-    //Datos del plan
-    RadioButton rbtn_plan_gratuito,rbtn_premiun;
-    String plan;
-    Button btn_guardar;
-
+    String correo,contrasena,nombre,apellido,fecha_nac,genero,talla,peso;
+    String qstr_objetivo,alergia;
+    String cant_kilo;
+    RadioButton rbtn_gratuito,rbtn_premium;
+    String qstr_plan;
+    Button btn_grabar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_planes_);
-
-    //Referenciamos
-        //Referencias del activity Register
-        txt_correo=findViewById(R.id.txt_correo);
-        txt_contrasena=findViewById(R.id.txt_contrasena);
-        txt_nombre=findViewById(R.id.txt_nombre);
-        txt_apellido=findViewById(R.id.txt_apellido);
-        txt_fecha=findViewById(R.id.txt_fecha);
-        cbo_genero= (Spinner)findViewById(R.id.cbo_genero);
-        txt_talla=findViewById(R.id.txt_talla);
-        txt_peso=findViewById(R.id.txt_peso);
-        //DAatos del formulario de Objetivos
-        rbtn_ganar_peso=(RadioButton)findViewById(R.id.rbtn_ganar_peso);
-        rbtn_perder_peso=(RadioButton)findViewById(R.id.rbt_perder_peso);
-        txt_alergia=findViewById(R.id.txt_alergia);
-        txt_cant_kilo=findViewById(R.id.txt_cant_kilo);
-        //Datos del Plan
-        rbtn_plan_gratuito=(RadioButton)findViewById(R.id.rbtn_gratuito);
-        rbtn_premiun=(RadioButton)findViewById(R.id.rbtn_premium);
-
-        //Referenciamos el boton de grabar
-        btn_guardar=findViewById(R.id.btn_guardar);
-
-        btn_guardar.setOnClickListener(new View.OnClickListener() {
+        //Referenciamos los objetos
+        recibirDatos();
+        rbtn_gratuito=findViewById(R.id.rbtn_gratuito);
+        rbtn_premium=findViewById(R.id.rbtn_premium);
+        btn_grabar=findViewById(R.id.btn_guardar);
+        btn_grabar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                correo=txt_correo.getText().toString();
-                contrasena=txt_contrasena.getText().toString();
-                nombre=txt_nombre.getText().toString();
-                apellido=txt_apellido.getText().toString();
-                fecha=txt_fecha.getText().toString();
-                genero=cbo_genero.getSelectedItem().toString();
-                talla=txt_talla.getText().toString();
-                peso=txt_peso.getText().toString();
-                alergia=txt_alergia.getText().toString();
-                cant_kilo= Double.valueOf(txt_cant_kilo.getValue());
-                if (rbtn_ganar_peso.isChecked())
-                {
-                    qstr_ganar_o_perder_peso="ganar";
+                if (rbtn_gratuito.isChecked()){
+                    qstr_plan="Plan gratuito";
                 }else{
-                    qstr_ganar_o_perder_peso="perder";
+                    qstr_plan="Plan premium";
                 }
 
-                if (rbtn_plan_gratuito.isChecked())
-                {
-                    plan="gratis";
-                }else
-                {
-                    plan="premium";
+                if(!qstr_plan.isEmpty()){
+                    pv_grabar("https://upcrestapi.azurewebsites.net/Usuarios");
+                }else{
+                    Toast.makeText(Planes_Activity.this, "Debe seleccionar un plan", Toast.LENGTH_SHORT).show();
                 }
-                //Verificamos que no eté vacio
-                if (!correo.isEmpty() || !contrasena.isEmpty() || !nombre.isEmpty() || !apellido.isEmpty() || !fecha.isEmpty() || !talla.isEmpty() || !peso.isEmpty() || !alergia.isEmpty())
-                {
-                    pv_guardar("https://upcrestapi.azurewebsites.net/Usuarios");
-                }else
-                {
-                    Toast.makeText(Planes_Activity.this, "No se permiten campos vacíos ¡Verifique!", Toast.LENGTH_SHORT).show();
-                }
-
             }
         });
     }
 
-    //Metodo para ejecutar el servicio
-    private void pv_guardar(String URL )
-    {
-        StringRequest stringRequest=new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                Toast.makeText(Planes_Activity.this, "Registrado Correctamente", Toast.LENGTH_SHORT).show();
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast.makeText(Planes_Activity.this, error.toString(), Toast.LENGTH_SHORT).show();
-            }
-        }){
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String,String>parametros=new HashMap<String,String>();
-                parametros.put("id",correo);
-                parametros.put("userid",correo);
-                parametros.put("password",contrasena);
-                parametros.put("nombres",nombre);
-                parametros.put("apellidos",apellido);
-                parametros.put("nacimiento",fecha);
-                //parametros.put("genero",genero);//Agregar este valor en el WS
-                parametros.put("talla",talla);
-                parametros.put("peso",peso);
-                parametros.put("deseo",qstr_ganar_o_perder_peso);//Debe de obtener peso, solo del radio button seleccionado
-                parametros.put("cantidadKilos", String.valueOf(cant_kilo));
-                parametros.put("cantidadSemanas","2");//falta objeto
-                parametros.put("alergias",alergia);
-                parametros.put("plan",txt_correo.getText().toString());
-                parametros.put("rol","Usuario");//Por defecto solo se creará el ususario, no existe un activity para registrar al nutricionista
-                return parametros;
-            }
-        };
-        RequestQueue requestQueue= Volley.newRequestQueue(this);
-        requestQueue.add(stringRequest);
+    void pv_grabar(String URL){
+        try {
+            RequestQueue requestQueue = Volley.newRequestQueue(this);
+            JSONObject jsonBody =new JSONObject();
+            //final org.json.JSONObject jsonObject=new org.json.JSONObject();
+
+            jsonBody .put("id",correo);
+            jsonBody .put("userid",correo);
+            jsonBody .put("nombres",nombre);
+            jsonBody .put("apellidos",apellido);
+            jsonBody .put("password",contrasena);
+            jsonBody .put("rol","Usuario");
+            jsonBody .put("talla",Integer.parseInt( talla));//talla
+            jsonBody .put("peso",Integer.parseInt(peso));//peso
+            jsonBody .put("nacimiento","30 de abril");//fecha_nac
+            jsonBody .put("deseo",qstr_objetivo);
+            jsonBody .put("cantidadKilos", Integer.parseInt(cant_kilo));//cant_kilo
+            jsonBody .put("cantidadSemanas",2);//agregar en el activity
+            jsonBody .put("alergias",alergia);
+            jsonBody .put("plan",qstr_plan);
+            //jsonObject.put("",genero); Agregar en el WS
+            final String mRequestBody=jsonBody .toString();
+            StringRequest stringRequest=new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+                    Toast.makeText(Planes_Activity.this, "Registrado Correctamente", Toast.LENGTH_SHORT).show();
+                    Intent intent=new Intent(Planes_Activity.this,NavigationActivity.class);
+                    startActivity(intent);
+                    //Log.d("test","satisfactorio:"+response);
+                    Log.d("test2","satisfactorio:"+jsonBody.toString());
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    NetworkResponse response = error.networkResponse;
+                    if (error instanceof ServerError && response != null){
+                        try {
+                            String res = new String(response.data,
+                                    HttpHeaderParser.parseCharset(response.headers, "utf-8"));
+                            Toast.makeText(Planes_Activity.this, res, Toast.LENGTH_SHORT).show();
+                        } catch (UnsupportedEncodingException e1) {
+                            // Couldn't properly decode data to string
+                            e1.printStackTrace();
+                        }
+                    }
+                }
+            })
+            {
+                @Override
+                public String getBodyContentType() {
+                    return "application/json; charset=utf-8";
+                }
+
+                @Override
+                public byte[] getBody() throws AuthFailureError {
+                    try {
+                        return mRequestBody.getBytes("utf-8");
+                    } catch (UnsupportedEncodingException e) {
+                        e.printStackTrace();
+                        return null;
+                    }
+                }
+
+                @Override
+                protected Response<String> parseNetworkResponse(NetworkResponse response) {
+                    String responseString = "";
+                    if (response != null) {
+                        responseString = String.valueOf(response.statusCode);
+                    }
+                    return Response.success(responseString, HttpHeaderParser.parseCacheHeaders(response));
+                }
+            };
+            requestQueue.add(stringRequest);
+        }catch (JSONException e){
+            e.printStackTrace();
+        }
+    }
+
+    private  void  recibirDatos(){
+        Bundle extras=getIntent().getExtras();
+        //recibimos losa datos del formulario usuario
+        correo=extras.getString("correo");
+        contrasena=extras.getString("contrasena");
+        nombre=extras.getString("nombre");
+        apellido=extras.getString("apellido");
+        fecha_nac=extras.getString("fecha_nac");
+        talla=extras.getString("talla");
+        peso=extras.getString("peso");
+        genero=extras.getString("genero");
+        //Recibimos datos del activity objetivos
+        qstr_objetivo=extras.getString("qstr_objetivo");
+        alergia=extras.getString("alergia");
+        cant_kilo= extras.getString("cant_kilo");
     }
 }

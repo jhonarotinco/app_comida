@@ -12,6 +12,7 @@
         android:layout_height="match_parent">
         <TextView
             android:id="@+id/textView3"
+            android:layout_marginTop="50dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Puedes acceder a estos planes"
@@ -20,30 +21,44 @@
             android:textAlignment="center"
             android:textSize="20dp" />
 
+        <ImageView
+            android:id="@+id/imageView3"
+            android:layout_width="match_parent"
+            android:layout_height="254dp"
+            android:layout_marginTop="30dp"
+            app:srcCompat="@drawable/plan2" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:orientation="horizontal">
-            <RadioButton
-                android:id="@+id/rbtn_gratuito"
-                android:textColor="#24A68C"
-                android:textStyle="normal"
-                android:layout_width="wrap_content"
-                android:textSize="18dp"
+            <RadioGroup
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Plan gratuito"
-                ></RadioButton>
-            <RadioButton
-                android:id="@+id/rbtn_premium"
-                android:textColor="#24A68C"
-                android:textStyle="normal"
-                android:textSize="18dp"
-                android:layout_width="wrap_content"
+                android:layout_marginTop="30dp"
                 android:layout_marginLeft="30dp"
-                android:layout_height="wrap_content"
-                android:text="Plan Nutricional"
-                ></RadioButton>
+                android:orientation="horizontal">
+                <RadioButton
+                    android:id="@+id/rbtn_gratuito"
+                    android:textColor="#24A68C"
+                    android:textStyle="normal"
+                    android:layout_width="wrap_content"
+                    android:textSize="18dp"
+                    android:layout_height="wrap_content"
+                    android:text="Plan gratuito"
+                    ></RadioButton>
+                <RadioButton
+                    android:id="@+id/rbtn_premium"
+                    android:textColor="#24A68C"
+                    android:textStyle="normal"
+                    android:textSize="18dp"
+                    android:layout_width="wrap_content"
+                    android:layout_marginLeft="30dp"
+                    android:layout_height="wrap_content"
+                    android:text="Plan Nutricional"
+                    ></RadioButton>
+            </RadioGroup>
         </LinearLayout>
 
         <Button
@@ -52,7 +67,7 @@
             android:layout_height="60dp"
             android:layout_gravity="center"
             android:layout_marginLeft="05dp"
-            android:layout_marginTop="25dp"
+            android:layout_marginTop="50dp"
             android:layout_marginRight="05dp"
             android:backgroundTint="#FF9A9A"
             android:text="Guardar"

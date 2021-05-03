@@ -43,7 +43,7 @@
         app:layout_constraintTop_toBottomOf="@+id/txtCalorias" />
 
     <Button
-        android:id="@+id/btnGuardar"
+        android:id="@+id/btnGuardarAlimento"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"

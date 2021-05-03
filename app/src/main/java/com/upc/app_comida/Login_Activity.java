@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioButton;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -36,7 +37,8 @@ public class Login_Activity extends AppCompatActivity {
     EditText txt_usuario,txt_contrasena;
     Button btn_ingresar;
     String usuario,contrasena;
-
+    RadioButton rbtn_cliente,rbtn_nutricionista;
+    String tipo_usuario;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,14 +47,21 @@ public class Login_Activity extends AppCompatActivity {
             getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
             txt_usuario=findViewById(R.id.txt_usuario);
             txt_contrasena=findViewById(R.id.txt_contrasena);
+            rbtn_cliente=findViewById(R.id.rbtn_cliente);
+            rbtn_nutricionista=findViewById(R.id.rbtn_nutricionista);
             btn_ingresar=findViewById(R.id.btn_ingresar);
-            //recuperarPreferencias();
+            recuperarPreferencias();
 
             btn_ingresar.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     usuario=txt_usuario.getText().toString();
                     contrasena=txt_contrasena.getText().toString();
+                    if (rbtn_cliente.isChecked()){
+                        tipo_usuario="Cliente";
+                    }else if (rbtn_nutricionista.isChecked()){
+                        tipo_usuario="Nutricionista";
+                    }
 
                     if (!usuario.isEmpty() && !contrasena.isEmpty())
                     {
@@ -79,12 +88,16 @@ public class Login_Activity extends AppCompatActivity {
             StringRequest stringRequest=new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
-
                     if (!response.isEmpty()){
-                        //guardarPreferencias();
-                        Intent intent=new Intent(getApplicationContext(),NavigationActivity.class);
-                        startActivity(intent);
-                        //finish();
+                        guardarPreferencias();
+                        if (tipo_usuario=="Cliente"){
+                            Intent intent=new Intent(getApplicationContext(),NavigationActivity.class);
+                            startActivity(intent);
+                        }else{
+                            Intent intent=new Intent(getApplicationContext(),NavigationActivity.class);
+                            startActivity(intent);
+                        }
+
                     }else{
                         Toast.makeText(Login_Activity.this, "Usuario o contraseña Incorrecto", Toast.LENGTH_SHORT).show();
                     }
@@ -128,7 +141,6 @@ public class Login_Activity extends AppCompatActivity {
                     }
                     return Response.success(responseString, HttpHeaderParser.parseCacheHeaders(response));
                 }
-
             /*@Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String,String> parametros=new HashMap<String,String>();
@@ -136,7 +148,6 @@ public class Login_Activity extends AppCompatActivity {
                 parametros.put("password",contrasena);
                 return parametros;
             }*/
-
             };
             RequestQueue requestQueue = Volley.newRequestQueue(this);
             requestQueue.add(stringRequest);
@@ -152,8 +163,9 @@ public class Login_Activity extends AppCompatActivity {
         SharedPreferences.Editor editor=preferences.edit();
         editor.putString("usuario",usuario);
         editor.putString("contrasena",contrasena);
+        editor.putString("tipo_usuario",tipo_usuario);
         editor.putBoolean("Sesion",true);
-        editor.commit();
+        editor.apply();
     }
 
     //Meotod para recuperar dichas preferencias
@@ -163,6 +175,7 @@ public class Login_Activity extends AppCompatActivity {
         txt_usuario.setText(preferences.getString("usuario","ejemplo@dominio.com"));
         txt_contrasena.setText(preferences.getString("contrasena","123456"));
     }
+
     public void onLoginClick(View View ){
         startActivity(new Intent(this,NavigationActivity.class));
     }

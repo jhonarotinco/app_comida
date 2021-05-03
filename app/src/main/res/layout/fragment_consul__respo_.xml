@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="20dp"
+    tools:context=".ui.consulta.Consul_Respo_Fragment">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/txv_consulta_c"
+            android:layout_marginTop="30dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Consulta del cliente"
+            android:textColor="#24A68C"
+            android:textStyle="normal"
+            android:textAlignment="center"
+            android:textSize="20dp" />
+
+        <EditText
+            android:id="@+id/txt_consulta_cli"
+            android:layout_width="match_parent"
+            android:layout_height="118dp"
+            android:layout_marginTop="10dp"
+            android:autoSizeStepGranularity="2sp"
+            android:background="@android:drawable/editbox_background_normal"
+            android:ems="10"
+            android:hint="Consulta del cliente"
+            android:inputType="textMultiLine"
+            android:textAlignment="center" />
+
+        <TextView
+            android:id="@+id/txv_nutricionista"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="Respuesta del Nutricionista"
+            android:textColor="#24A68C"
+            android:textStyle="normal"
+            android:textAlignment="center"
+            android:textSize="20dp" />
+        <EditText
+            android:layout_marginTop="10dp"
+            android:id="@+id/txt_respuesta_nutri"
+            android:layout_width="match_parent"
+            android:layout_height="118dp"
+            android:textAlignment="center"
+            android:background="@android:drawable/editbox_background_normal"
+            android:ems="10"
+            android:hint="Respuesta del Nutricionista"
+            android:inputType="textMultiLine"
+            android:autoSizeStepGranularity="2sp"/>
+        <Button
+            android:id="@+id/btn_grabar_consulta"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_gravity="center"
+            android:layout_marginLeft="05dp"
+            android:layout_marginTop="25dp"
+            android:layout_marginRight="05dp"
+            android:backgroundTint="#FF9A9A"
+            android:text="Grabar Consulta"
+            android:textColor="#ffff"
+            android:textSize="20dp"
+            android:textStyle="bold" />
+        <Button
+            android:id="@+id/btn_responder_consula"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_gravity="center"
+            android:layout_marginLeft="05dp"
+            android:layout_marginTop="25dp"
+            android:layout_marginRight="05dp"
+            android:backgroundTint="#FF9A9A"
+            android:text="Grabar Respuesta"
+            android:textColor="#ffff"
+            android:textSize="20dp"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+
+</RelativeLayout>
