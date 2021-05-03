@@ -1,11 +1,12 @@
-package com.upc.app_comida.ui.alimentos;
+package com.upc.app_comida.ui.gallery;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +24,8 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.HttpHeaderParser;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.upc.app_comida.Login_Activity;
+import com.upc.app_comida.NavigationActivity;
 import com.upc.app_comida.R;
 
 import org.json.JSONException;
@@ -31,43 +34,47 @@ import org.json.JSONObject;
 import java.io.UnsupportedEncodingException;
 
 
-public class AlimentosFragment extends Fragment {
+public class RegistrarPesoFragment extends Fragment {
 
-    EditText txtNombreComida, txtCalorias, txtCategoria;
-    Button btnGuardarAlimento;
+    String Usuario, peso;
+    EditText edit_peso;
+    Button btn_registrar_peso;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_alimentos, container, false);
-        txtNombreComida = view.findViewById(R.id.txtNombreComida);
-        txtCalorias = view.findViewById(R.id.txtCalorias);
-        txtCategoria = view.findViewById(R.id.txtCategoria);
-        btnGuardarAlimento = view.findViewById(R.id.btnGuardarAlimento);
-        btnGuardarAlimento.setOnClickListener(new View.OnClickListener() {
+        View view = inflater.inflate(R.layout.fragment_registrar_peso, container, false);
+        recuperarPreferencias();
+        edit_peso = view.findViewById(R.id.txt_peso);
+        btn_registrar_peso = view.findViewById(R.id.btn_registrar_peso_rest);
+        btn_registrar_peso.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                registrarAlimento();
+                registrarPeso();
             }
         });
         return view;
     }
 
-    private void registrarAlimento(){
+    private void  recuperarPreferencias(){
+        SharedPreferences preferences=this.getActivity().getSharedPreferences("preferencias", Context.MODE_PRIVATE);
+        Usuario=preferences.getString("usuario","ejemplo@dominio.com");
+    }
+
+    private void registrarPeso(){
+        String idUsuario_request = Usuario.replaceAll("@", "%40");
+        Integer peso = Integer.valueOf(edit_peso.getText().toString());
+        String url = "https://upcrestapi.azurewebsites.net/Usuarios/"+idUsuario_request+"/Historial";
         try {
-            String url = "https://upcrestapi.azurewebsites.net/api/Karmu/Alimentos";
-            RequestQueue requestQueue= Volley.newRequestQueue(getContext());
-            JSONObject jsonBody=new JSONObject();
-            jsonBody.put("id",6);
-            jsonBody.put("titulo", txtNombreComida.getText().toString());
-            jsonBody.put("distribucionEnergetica","");
-            jsonBody.put("tipo", txtCategoria.getText().toString());
-            jsonBody.put("calorias", Integer.valueOf(txtCalorias.getText().toString()));
-            final  String mRequestBody=jsonBody.toString();
+            JSONObject jsonBody = new JSONObject();
+            jsonBody.put("fecha", "3/05/2021");
+            jsonBody.put("peso", peso);
+            final String mRequestBody = jsonBody.toString();
+
             StringRequest stringRequest=new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
-                    Toast.makeText(getContext(), "Se registró correctamente", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "El Peso se registró correctamente", Toast.LENGTH_SHORT).show();
                 }
             }, new Response.ErrorListener() {
                 @Override
@@ -84,9 +91,11 @@ public class AlimentosFragment extends Fragment {
                         }
                     }
                 }
-            }){
+            }) {
                 @Override
-                public String getBodyContentType() {return "application/json; charset=utf-8";}
+                public String getBodyContentType() {
+                    return "application/json; charset=utf-8";
+                }
 
                 @Override
                 public byte[] getBody() throws AuthFailureError {
@@ -97,6 +106,7 @@ public class AlimentosFragment extends Fragment {
                         return null;
                     }
                 }
+
                 @Override
                 protected Response<String> parseNetworkResponse(NetworkResponse response) {
                     String responseString = "";
@@ -106,11 +116,10 @@ public class AlimentosFragment extends Fragment {
                     return Response.success(responseString, HttpHeaderParser.parseCacheHeaders(response));
                 }
             };
+            RequestQueue requestQueue = Volley.newRequestQueue(getContext());
             requestQueue.add(stringRequest);
-
-        }catch (JSONException e){
+        } catch (JSONException e) {
             e.printStackTrace();
         }
     }
-
 }
